@@ -40,32 +40,16 @@ class PositionTest(unittest.TestCase):
         self.assertNotEqual(Position(1, 1), Position(1, 2))
 
     def test_move_north(self):
-        position = Position()
-        position.move(Direction.north, 1)
-
-        self.assertEqual(position.x, 0)
-        self.assertEqual(position.y, 1)
+        self.assertEqual(Position(0, 0).move(Direction.north, 1), Position(0, 1))
 
     def test_move_east(self):
-        position = Position()
-        position.move(Direction.east, 1)
-
-        self.assertEqual(position.x, 1)
-        self.assertEqual(position.y, 0)
+        self.assertEqual(Position(0, 0).move(Direction.east, 1), Position(1, 0))
 
     def test_move_south(self):
-        position = Position()
-        position.move(Direction.south, 1)
-
-        self.assertEqual(position.x, 0)
-        self.assertEqual(position.y, -1)
+        self.assertEqual(Position(0, 0).move(Direction.south, 1), Position(0, -1))
 
     def test_move_west(self):
-        position = Position()
-        position.move(Direction.west, 1)
-
-        self.assertEqual(position.x, -1)
-        self.assertEqual(position.y, 0)
+        self.assertEqual(Position(0, 0).move(Direction.west, 1), Position(-1, 0))
 
 class StreetGridTest(unittest.TestCase):
 

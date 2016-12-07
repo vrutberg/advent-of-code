@@ -66,13 +66,13 @@ class Position:
 
     def move(self, direction: Direction, steps: int):
         if direction is Direction.north:
-            self.y += steps
+            return Position(self.x, self.y + steps)
         elif direction is Direction.east:
-            self.x += steps
+            return Position(self.x + steps, self.y)
         elif direction is Direction.south:
-            self.y -= steps
+            return Position(self.x, self.y - steps)
         elif direction is Direction.west:
-            self.x -= steps
+            return Position(self.x - steps, self.y)
 
     def __str__(self):
         return "Position(x: {}, y: {})".format(self.x, self.y)
@@ -98,7 +98,7 @@ class StreetGrid:
 
     def process_instruction(self, instruction: Instruction):
         self.current_direction = self.current_direction.turn(instruction.turn)
-        self.current_position.move(self.current_direction, instruction.steps)
+        self.current_position = self.current_position.move(self.current_direction, instruction.steps)
 
 
 class BlockCalculator:
