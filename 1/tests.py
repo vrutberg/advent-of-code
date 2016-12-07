@@ -51,6 +51,46 @@ class PositionTest(unittest.TestCase):
     def test_move_west(self):
         self.assertEqual(Position(0, 0).move(Direction.west, 1), Position(-1, 0))
 
+    def test_positions_to_y(self):
+        position1 = Position(0, 0)
+        position2 = Position(0, 2)
+
+        between = position1.positions_to(position2)
+
+        self.assertEqual(len(between), 2)
+        self.assertEqual(between[0], Position(0, 1))
+        self.assertEqual(between[1], Position(0, 2))
+
+    def test_positions_to_x(self):
+        position1 = Position(0, 0)
+        position2 = Position(2, 0)
+
+        between = position1.positions_to(position2)
+
+        self.assertEqual(len(between), 2)
+        self.assertEqual(between[0], Position(1, 0))
+        self.assertEqual(between[1], Position(2, 0))
+
+    def test_positions_to_y_negative(self):
+        position1 = Position(0, 0)
+        position2 = Position(0, -2)
+
+        between = position1.positions_to(position2)
+
+        self.assertEqual(len(between), 2)
+        self.assertEqual(between[0], Position(0, -1))
+        self.assertEqual(between[1], Position(0, -2))
+
+    def test_positions_to_x_negative(self):
+        position1 = Position(0, 0)
+        position2 = Position(-2, 0)
+
+        between = position1.positions_to(position2)
+
+        self.assertEqual(len(between), 2)
+        self.assertEqual(between[0], Position(-1, 0))
+        self.assertEqual(between[1], Position(-2, 0))
+
 class StreetGridTest(unittest.TestCase):
 
     def test_proces_instruction_updates_current_direction(self):
@@ -108,7 +148,6 @@ class BlockCalculatorTest(unittest.TestCase):
         distance = calculator.calculate_distance(Position(), grid.current_position)
 
         self.assertEqual(distance, 12)
-
 
 class DuplicatePositionFinderTest(unittest.TestCase):
 

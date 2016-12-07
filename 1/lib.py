@@ -57,8 +57,6 @@ class Instruction:
 
 
 class Position:
-    x = 0
-    y = 0
 
     def __init__(self, x: int = 0, y: int = 0):
         self.x = x
@@ -73,6 +71,26 @@ class Position:
             return Position(self.x, self.y - steps)
         elif direction is Direction.west:
             return Position(self.x - steps, self.y)
+
+    def positions_to(self, other):
+        if not (self.x == other.x or self.y == other.y):
+            return NotImplemented
+
+        positions = []
+
+        if self.x == other.x:
+            step = 1 if self.y < other.y else -1
+
+            for y in range(self.y, other.y, step):
+                positions.append(Position(self.x, y + step))
+
+        elif self.y == other.y:
+            step = 1 if self.x < other.x else -1
+
+            for x in range(self.x, other.x, step):
+                positions.append(Position(x + step, self.y))
+
+        return positions
 
     def __str__(self):
         return "Position(x: {}, y: {})".format(self.x, self.y)
