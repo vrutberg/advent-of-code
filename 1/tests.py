@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 import unittest
-from solution import *
+from lib import *
 
 class DirectionTest(unittest.TestCase):
 
