@@ -90,7 +90,7 @@ class StreetGrid:
 
 class BlockCalculator:
     def calculate_distance(self, from_pos: Position, to_pos: Position):
-        return 0
+        return abs(to_pos.x) + abs(to_pos.y)
 
 if __name__ == '__main__':
 
@@ -101,4 +101,4 @@ if __name__ == '__main__':
     for instruction in instructions:
         grid.process_instruction(instruction)
 
-    print(grid.current_position)
+    print(BlockCalculator().calculate_distance(Position(), grid.current_position))
