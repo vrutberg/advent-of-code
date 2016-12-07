@@ -95,13 +95,29 @@ class DiamondKeypadPosition(KeypadPosition):
             else:
                 return DiamondKeypadPosition(self.x, min(2, self.y + 1))
 
-
         elif direction is Direction.right:
-            return DiamondKeypadPosition(min(1, self.x + 1), self.y)
+            if abs(self.y) is 2:
+                return DiamondKeypadPosition(self.x, self.y)
+            elif abs(self.y) is 1:
+                return DiamondKeypadPosition(min(1, self.x + 1), self.y)
+            else:
+                return DiamondKeypadPosition(min(2, self.x + 1), self.y)
+
         elif direction is Direction.down:
-            return DiamondKeypadPosition(self.x, min(1, self.y + 1))
+            if abs(self.x) is 2:
+                return DiamondKeypadPosition(self.x, self.y)
+            elif abs(self.x) is 1:
+                return DiamondKeypadPosition(self.x, max(-1, self.y - 1))
+            else:
+                return DiamondKeypadPosition(self.x, max(-2, self.y - 1))
+
         elif direction is Direction.left:
-            return DiamondKeypadPosition(max(-1, self.x - 1), self.y)
+            if abs(self.y) is 2:
+                return DiamondKeypadPosition(self.x, self.y)
+            elif abs(self.y) is 1:
+                return DiamondKeypadPosition(max(-1, self.x - 1), self.y)
+            else:
+                return DiamondKeypadPosition(max(-2, self.x - 1), self.y)
 
     def to_digit(self):
         if self.x is -1 and self.y is -1:
