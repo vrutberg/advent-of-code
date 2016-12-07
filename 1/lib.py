@@ -60,6 +60,10 @@ class Position:
     x = 0
     y = 0
 
+    def __init__(self, x: int = 0, y: int = 0):
+        self.x = x
+        self.y = y
+
     def move(self, direction: Direction, steps: int):
         if direction is Direction.north:
             self.y += steps
@@ -75,6 +79,15 @@ class Position:
 
     def __repr__(self):
         return self.__str__()
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 
 class StreetGrid:

@@ -33,6 +33,12 @@ class InstructionTest(unittest.TestCase):
 
 class PositionTest(unittest.TestCase):
 
+    def test_equals(self):
+        self.assertEqual(Position(1, 1), Position(1, 1))
+
+    def test_not_equals(self):
+        self.assertNotEqual(Position(1, 1), Position(1, 2))
+
     def test_move_north(self):
         position = Position()
         position.move(Direction.north, 1)
