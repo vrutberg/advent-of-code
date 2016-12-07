@@ -120,24 +120,32 @@ class DiamondKeypadPosition(KeypadPosition):
                 return DiamondKeypadPosition(max(-2, self.x - 1), self.y)
 
     def to_digit(self):
-        if self.x is -1 and self.y is -1:
+        if self.x is 0 and self.y is 2:
             return 1
-        elif self.x is 0 and self.y is -1:
-            return 2
-        elif self.x is 1 and self.y is -1:
-            return 3
-        elif self.x is -1 and self.y is 0:
-            return 4
-        elif self.x is 0 and self.y is 0:
-            return 5
-        elif self.x is 1 and self.y is 0:
-            return 6
         elif self.x is -1 and self.y is 1:
-            return 7
+            return 2
         elif self.x is 0 and self.y is 1:
-            return 8
+            return 3
         elif self.x is 1 and self.y is 1:
+            return 4
+        elif self.x is -2 and self.y is 0:
+            return 5
+        elif self.x is -1 and self.y is 0:
+            return 6
+        elif self.x is 0 and self.y is 0:
+            return 7
+        elif self.x is 1 and self.y is 0:
+            return 8
+        elif self.x is 2 and self.y is 0:
             return 9
+        elif self.x is -1 and self.y is -1:
+            return 'A'
+        elif self.x is 0 and self.y is -1:
+            return 'B'
+        elif self.x is 1 and self.y is -1:
+            return 'C'
+        elif self.x is 0 and self.y is -2:
+            return 'D'
 
 
 class KeypadInstruction:

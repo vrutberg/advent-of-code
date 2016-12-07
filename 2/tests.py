@@ -70,6 +70,21 @@ class DiamondKeypadPositionTest(unittest.TestCase):
         self.assertEqual(DiamondKeypadPosition(-1, -1).move(Direction.left), DiamondKeypadPosition(-1, -1))
         self.assertEqual(DiamondKeypadPosition(0, -2).move(Direction.left), DiamondKeypadPosition(0, -2))
 
+    def test_digit(self):
+        self.assertEqual(DiamondKeypadPosition(0, 2).to_digit(), 1)
+        self.assertEqual(DiamondKeypadPosition(-1, 1).to_digit(), 2)
+        self.assertEqual(DiamondKeypadPosition(0, 1).to_digit(), 3)
+        self.assertEqual(DiamondKeypadPosition(1, 1).to_digit(), 4)
+        self.assertEqual(DiamondKeypadPosition(-2, 0).to_digit(), 5)
+        self.assertEqual(DiamondKeypadPosition(-1, 0).to_digit(), 6)
+        self.assertEqual(DiamondKeypadPosition(0, 0).to_digit(), 7)
+        self.assertEqual(DiamondKeypadPosition(1, 0).to_digit(), 8)
+        self.assertEqual(DiamondKeypadPosition(2, 0).to_digit(), 9)
+        self.assertEqual(DiamondKeypadPosition(-1, -1).to_digit(), 'A')
+        self.assertEqual(DiamondKeypadPosition(0, -1).to_digit(), 'B')
+        self.assertEqual(DiamondKeypadPosition(1, -1).to_digit(), 'C')
+        self.assertEqual(DiamondKeypadPosition(0, -2).to_digit(), 'D')
+
 
 class KeypadInstructionTest(unittest.TestCase):
     def test_example_one(self):
