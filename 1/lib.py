@@ -92,7 +92,7 @@ class Position:
 
 class StreetGrid:
 
-    def __init__(self, direction: Direction):
+    def __init__(self, direction: Direction = Direction.north):
         self.current_direction = direction
         self.current_position = Position()
 
@@ -104,3 +104,22 @@ class StreetGrid:
 class BlockCalculator:
     def calculate_distance(self, from_pos: Position, to_pos: Position):
         return abs(to_pos.x) + abs(to_pos.y)
+
+class DuplicatePositionFinder:
+
+    def __init__(self, instructions):
+        self.instructions = instructions
+        self.grid = StreetGrid()
+        self.visited_positions = []
+
+    def find(self):
+        for instruction in self.instructions:
+            self.grid.process_instruction(instruction)
+
+            for position in self.visited_positions:
+                if position == self.grid.current_position:
+                    return position
+
+            self.visited_positions.append(self.grid.current_position)
+
+        return None

@@ -110,5 +110,19 @@ class BlockCalculatorTest(unittest.TestCase):
         self.assertEqual(distance, 12)
 
 
+class DuplicatePositionFinderTest(unittest.TestCase):
+
+    def test_example(self):
+        instructions = [Instruction(8, Turn.right),
+                        Instruction(4, Turn.right),
+                        Instruction(4, Turn.right),
+                        Instruction(8, Turn.right)]
+
+        finder = DuplicatePositionFinder(instructions)
+
+        position = finder.find()
+
+        self.assertEqual(position, Position(4, 0))
+
 if __name__ == '__main__':
     unittest.main()
