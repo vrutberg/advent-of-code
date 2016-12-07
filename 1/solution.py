@@ -11,4 +11,5 @@ if __name__ == '__main__':
     for instruction in instructions:
         grid.process_instruction(instruction)
 
-    print(BlockCalculator().calculate_distance(Position(), grid.current_position))
+    distance = BlockCalculator().calculate_distance(Position(), grid.current_position)
+    print("Destination is {} blocks away".format(distance))
