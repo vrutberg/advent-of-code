@@ -131,13 +131,21 @@ class DuplicatePositionFinder:
         self.visited_positions = []
 
     def find(self):
+        previous_position = None
+
         for instruction in self.instructions:
+            previous_position = self.grid.current_position
+
             self.grid.process_instruction(instruction)
 
-            for position in self.visited_positions:
-                if position == self.grid.current_position:
-                    return position
+            if previous_position is not None:
+                positions_to = previous_position.positions_to(self.grid.current_position)
 
-            self.visited_positions.append(self.grid.current_position)
+                for position in positions_to:
+                    for otherPosition in self.visited_positions:
+                        if position == otherPosition:
+                            return position
+
+                    self.visited_positions.append(position)
 
         return None
