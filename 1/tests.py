@@ -81,5 +81,44 @@ class StreetGridTest(unittest.TestCase):
         self.assertEqual(current_position.x, -1)
         self.assertEqual(current_position.y, 0)
 
+class BlockCalculatorTest(unittest.TestCase):
+
+    def test_example_one(self):
+        grid = StreetGrid(Direction.north)
+        calculator = BlockCalculator()
+
+        grid.process_instruction(Instruction(2, Turn.right))
+        grid.process_instruction(Instruction(3, Turn.left))
+
+        distance = calculator.calculate_distance(Position(), grid.current_position)
+
+        self.assertEqual(distance, 5)
+
+    def test_example_two(self):
+        grid = StreetGrid(Direction.north)
+        calculator = BlockCalculator()
+
+        grid.process_instruction(Instruction(2, Turn.right))
+        grid.process_instruction(Instruction(2, Turn.right))
+        grid.process_instruction(Instruction(2, Turn.right))
+
+        distance = calculator.calculate_distance(Position(), grid.current_position)
+
+        self.assertEqual(distance, 2)
+
+    def test_example_three(self):
+        grid = StreetGrid(Direction.north)
+        calculator = BlockCalculator()
+
+        grid.process_instruction(Instruction(5, Turn.right))
+        grid.process_instruction(Instruction(5, Turn.left))
+        grid.process_instruction(Instruction(5, Turn.right))
+        grid.process_instruction(Instruction(3, Turn.right))
+
+        distance = calculator.calculate_distance(Position(), grid.current_position)
+
+        self.assertEqual(distance, 12)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -88,6 +88,10 @@ class StreetGrid:
         self.current_position.move(self.current_direction, instruction.steps)
 
 
+class BlockCalculator:
+    def calculate_distance(self, from_pos: Position, to_pos: Position):
+        return 0
+
 if __name__ == '__main__':
 
     input = open('input.txt', 'r').read().strip().split(', ')
