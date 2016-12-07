@@ -149,11 +149,12 @@ class DiamondKeypadPosition(KeypadPosition):
 
 
 class KeypadInstruction:
-    def __init__(self, directions):
+    def __init__(self, directions, starting_position = KeypadPosition()):
         self.directions = directions
+        self.starting_position = starting_position
 
     def follow(self):
-        current_position = KeypadPosition()
+        current_position = self.starting_position
 
         for direction in self.directions:
             current_position = current_position.move(direction)

@@ -7,7 +7,7 @@ if __name__ == '__main__':
     input = open('input.txt', 'r').read().strip().split('\n')
 
     directions = list(map(lambda s: DirectionFactory.from_string(s), input))
-    instructions = list(map(lambda d: KeypadInstruction(d), directions))
+    instructions = list(map(lambda d: KeypadInstruction(d, DiamondKeypadPosition()), directions))
 
     keypad = Keypad(instructions)
     keypad.follow_instructions()
