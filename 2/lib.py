@@ -8,6 +8,7 @@ class Direction(Enum):
     down = 3
     left = 4
 
+
 class DirectionFactory:
     @staticmethod
     def from_char(c: str):
@@ -32,6 +33,7 @@ class DirectionFactory:
 
         return directions
 
+
 class KeypadPosition:
     def __init__(self, x: int = 0, y: int = 0):
         self.x = x
@@ -39,13 +41,67 @@ class KeypadPosition:
 
     def move(self, direction: Direction):
         if direction is Direction.up:
-            return KeypadPosition(self.x, max(-1, self.y - 1))
+            return KeypadPosition(self.x, min(1, self.y + 1))
         elif direction is Direction.right:
             return KeypadPosition(min(1, self.x + 1), self.y)
         elif direction is Direction.down:
-            return KeypadPosition(self.x, min(1, self.y + 1))
+            return KeypadPosition(self.x, max(-1, self.y - 1))
         elif direction is Direction.left:
             return KeypadPosition(max(-1, self.x - 1), self.y)
+
+    def to_digit(self):
+        if self.x is -1 and self.y is 1:
+            return 1
+        elif self.x is 0 and self.y is 1:
+            return 2
+        elif self.x is 1 and self.y is 1:
+            return 3
+        elif self.x is -1 and self.y is 0:
+            return 4
+        elif self.x is 0 and self.y is 0:
+            return 5
+        elif self.x is 1 and self.y is 0:
+            return 6
+        elif self.x is -1 and self.y is -1:
+            return 7
+        elif self.x is 0 and self.y is -1:
+            return 8
+        elif self.x is 1 and self.y is -1:
+            return 9
+
+    def __str__(self):
+        return "{}{}".format(type(self).__name__, self.__dict__)
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
+class DiamondKeypadPosition(KeypadPosition):
+    def move(self, direction: Direction):
+        if direction is Direction.up:
+            if abs(self.x) is 2:
+                return DiamondKeypadPosition(self.x, self.y)
+            elif abs(self.x) is 1:
+                return DiamondKeypadPosition(self.x, min(1, self.y + 1))
+            else:
+                return DiamondKeypadPosition(self.x, min(2, self.y + 1))
+
+
+        elif direction is Direction.right:
+            return DiamondKeypadPosition(min(1, self.x + 1), self.y)
+        elif direction is Direction.down:
+            return DiamondKeypadPosition(self.x, min(1, self.y + 1))
+        elif direction is Direction.left:
+            return DiamondKeypadPosition(max(-1, self.x - 1), self.y)
 
     def to_digit(self):
         if self.x is -1 and self.y is -1:
@@ -67,21 +123,6 @@ class KeypadPosition:
         elif self.x is 1 and self.y is 1:
             return 9
 
-    def __str__(self):
-        return "KeypadPosition(x: {}, y: {})".format(self.x, self.y)
-
-    def __repr__(self):
-        return self.__str__()
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-
-        return False
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
 
 class KeypadInstruction:
     def __init__(self, directions):
@@ -94,6 +135,7 @@ class KeypadInstruction:
             current_position = current_position.move(direction)
 
         return current_position.to_digit()
+
 
 class Keypad:
     def __init__(self, instructions):
