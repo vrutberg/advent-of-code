@@ -12,6 +12,14 @@ class RoomTest(unittest.TestCase):
         self.assertEqual(room.expected_checksum, 'abxyz')
 
 
+class SorterTest(unittest.TestCase):
+    def test_sorting(self):
+        sorter = Sorter('kalabalik')
+        self.assertTrue(sorter.key('a') > sorter.key('k'))
+        self.assertTrue(sorter.key('k') > sorter.key('l'))
+        self.assertTrue(sorter.key('l') > sorter.key('b'))
+        self.assertTrue(sorter.key('b') > sorter.key('i'))
+
 class ChecksumCalculatorTest(unittest.TestCase):
     def test_example_one(self):
         room = Room('aaaaa-bbb-z-y-x-123[abxyz]')
