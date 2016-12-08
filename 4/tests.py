@@ -11,6 +11,7 @@ class RoomTest(unittest.TestCase):
         self.assertEqual(room.sector_id, 123)
         self.assertEqual(room.expected_checksum, 'abxyz')
 
+
 class ChecksumCalculatorTest(unittest.TestCase):
     def test_example_one(self):
         room = Room('aaaaa-bbb-z-y-x-123[abxyz]')
@@ -24,6 +25,11 @@ class ChecksumCalculatorTest(unittest.TestCase):
         room = Room('not-a-real-room-404[oarel]')
         self.assertEqual(ChecksumCalculator().calculcate_checksum(room), 'oarel')
 
+    def test_unique(self):
+        self.assertEqual(ChecksumCalculator()._unique('aaabbbccc'), 'abc')
+
+    def test_unique_preserves_order(self):
+        self.assertEqual(ChecksumCalculator()._unique('abaca'), 'abc')
 
 if __name__ == '__main__':
     unittest.main()

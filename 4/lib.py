@@ -1,7 +1,6 @@
 #!/usr/local/bin/python3
 
 import re
-import operator
 
 room_regex = re.compile('((?:[a-z]+-)+)([0-9]+)\[([a-z]+)\]')
 
@@ -30,7 +29,7 @@ class ChecksumCalculator:
     def _unique(self, s: str):
         unique = []
         [unique.append(i) for i in s if not unique.count(i)]
-        return unique
+        return "".join(unique)
 
     def calculcate_checksum(self, room: Room):
         sorter = Sorter(room.name)
