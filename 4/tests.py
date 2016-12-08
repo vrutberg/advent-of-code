@@ -48,7 +48,7 @@ class ChecksumCalculatorTest(unittest.TestCase):
 class RoomNameDecrypterTest(unittest.TestCase):
     def test_example(self):
         room = Room('qzmt-zixmtkozy-ivhz-343[unimportant]')
-        self.assertEqual(RoomNameDecrypter().decrypt(room), 'veryencryptedname')
+        self.assertEqual(RoomNameDecrypter().decrypt(room), 'very encrypted name')
 
 if __name__ == '__main__':
     unittest.main()

@@ -7,6 +7,7 @@ room_regex = re.compile('((?:[a-z]+-)+)([0-9]+)\[([a-z]+)\]')
 class Room:
     def __init__(self, str: str):
         matches = room_regex.findall(str)[0]
+        self.raw_name = matches[0]
         self.name = matches[0].replace('-', '')
         self.sector_id = int(matches[1])
         self.expected_checksum = matches[2]
@@ -37,6 +38,20 @@ class ChecksumCalculator:
         sorter = Sorter(room.name)
         return "".join(sorted(self._unique(room.name), key=sorter.key, reverse=True)[:5])
 
+
 class RoomNameDecrypter:
+    _alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
     def decrypt(self, room: Room):
-        return ''
+        rotations = room.sector_id % 26
+        unencrypted_name = ''
+
+        for char in room.raw_name:
+            if char is '-':
+                unencrypted_name += char
+                continue
+
+            new_index = (self._alphabet.index(char) + rotations) % len(self._alphabet)
+            unencrypted_name += self._alphabet[new_index]
+
+        return unencrypted_name.replace('-', ' ').strip()
