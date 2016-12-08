@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 
 import operator
+import re
 
 def uniq(seq):
    unique = []
@@ -13,14 +14,15 @@ if __name__ == '__main__':
     input = open('input.txt', 'r').read().strip().split('\n')
 
     sum = 0
+    regex = re.compile('((?:[a-z]+-)+)([0-9]+)\[([a-z]+)\]')
 
     for room in input:
-        split = room.split('-')
-        name = "".join(split[:len(split) - 1])
-        last = split[-1:][0].split('[')
-        sector_id = int(last[0])
-        expected_checksum = last[1][:-1]
+        matches = regex.findall(room)[0]
+        name = matches[0].replace('-', '')
+        sector_id = int(matches[1])
+        expected_checksum = matches[2]
         unique = uniq(name)
+
         occurrences = {}
 
         for i in unique:
