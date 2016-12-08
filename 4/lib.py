@@ -10,3 +10,10 @@ class Room:
         self.name = matches[0].replace('-', '')
         self.sector_id = int(matches[1])
         self.expected_checksum = matches[2]
+
+
+class ChecksumCalculator:
+    @staticmethod
+    def calculcate_checksum(room: Room):
+        return ''
+        
