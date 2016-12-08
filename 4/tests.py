@@ -33,6 +33,10 @@ class ChecksumCalculatorTest(unittest.TestCase):
         room = Room('not-a-real-room-404[oarel]')
         self.assertEqual(ChecksumCalculator().calculcate_checksum(room), 'oarel')
 
+    def test_example_from_reddit(self):
+        room = Room('jvuzbtly-nyhkl-yhiipa-zavyhnl-123[yhlai]')
+        self.assertEqual(ChecksumCalculator().calculcate_checksum(room), 'yhlai')
+
     def test_unique(self):
         self.assertEqual(ChecksumCalculator()._unique('aaabbbccc'), 'abc')
 

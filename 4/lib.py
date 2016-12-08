@@ -20,7 +20,9 @@ class Sorter:
 
     def key(self, c):
         value = self._alphabet.index(c) + 1
-        factor = pow(self.s.count(c), 2)
+
+        # TODO(vrutberg): I don't like how arbitrary a value of 1000 feels...
+        factor = pow(self.s.count(c), 1000)
 
         return value * factor
 
