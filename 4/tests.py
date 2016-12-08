@@ -20,6 +20,7 @@ class SorterTest(unittest.TestCase):
         self.assertTrue(sorter.key('l') > sorter.key('b'))
         self.assertTrue(sorter.key('b') > sorter.key('i'))
 
+
 class ChecksumCalculatorTest(unittest.TestCase):
     def test_example_one(self):
         room = Room('aaaaa-bbb-z-y-x-123[abxyz]')
@@ -42,6 +43,12 @@ class ChecksumCalculatorTest(unittest.TestCase):
 
     def test_unique_preserves_order(self):
         self.assertEqual(ChecksumCalculator()._unique('abaca'), 'abc')
+
+
+class RoomNameDecrypterTest(unittest.TestCase):
+    def test_example(self):
+        room = Room('qzmt-zixmtkozy-ivhz-343[unimportant]')
+        self.assertEqual(RoomNameDecrypter().decrypt(room), 'veryencryptedname')
 
 if __name__ == '__main__':
     unittest.main()

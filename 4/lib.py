@@ -36,3 +36,7 @@ class ChecksumCalculator:
     def calculcate_checksum(self, room: Room):
         sorter = Sorter(room.name)
         return "".join(sorted(self._unique(room.name), key=sorter.key, reverse=True)[:5])
+
+class RoomNameDecrypter:
+    def decrypt(self, room: Room):
+        return ''
