@@ -21,9 +21,7 @@ class Sorter:
 
     def key(self, c):
         value = self._alphabet.index(c) + 1
-        factor = self.s.count(c)
-
-        print(self.s, c, value * factor)
+        factor = pow(self.s.count(c), 2)
 
         return value * factor
 
@@ -35,9 +33,5 @@ class ChecksumCalculator:
         return unique
 
     def calculcate_checksum(self, room: Room):
-        unique = self._unique(room.name)
-
         sorter = Sorter(room.name)
-        unique = sorted(unique, key=sorter.key)[:5]
-
-        return unique
+        return "".join(sorted(self._unique(room.name), key=sorter.key, reverse=True)[:5])
