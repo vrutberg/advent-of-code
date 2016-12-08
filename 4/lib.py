@@ -22,12 +22,16 @@ class ChecksumCalculator:
     def calculcate_checksum(self, room: Room):
         unique = self._unique(room.name)
 
-        occurrences = {}
+        occurrences = []
 
         for i in unique:
-            occurrences[i] = room.name.count(i)
+            occurrences.append((i, room.name.count(i)))
 
-        sorted_occurrences = list(reversed(sorted(occurrences.items(), key=operator.itemgetter(1))))[:5]
+        print(occurrences)
+        sorted_occurrences = list(sorted(occurrences, key=operator.itemgetter(0)))
+        print(sorted_occurrences)
+        sorted_occurrences = list(sorted(occurrences, key=operator.itemgetter(1), reverse=True))[:5]
+        print(sorted_occurrences)
         checksum = ""
 
         for s in sorted_occurrences:
