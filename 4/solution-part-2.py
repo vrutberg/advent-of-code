@@ -10,4 +10,7 @@ if __name__ == '__main__':
 
     for room_string in input:
         room = Room(room_string)
-        print("{}: {}".format(decrypter.decrypt(room), room.sector_id))
+        decrypted_name = decrypter.decrypt(room)
+
+        if 'northpole' in decrypted_name:
+            print("{}: {}".format(decrypter.decrypt(room), room.sector_id))
