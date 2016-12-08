@@ -1,5 +1,7 @@
 #!/usr/local/bin/python3
 
+from lib import *
+
 import operator
 import re
 
@@ -16,17 +18,14 @@ if __name__ == '__main__':
     sum = 0
     regex = re.compile('((?:[a-z]+-)+)([0-9]+)\[([a-z]+)\]')
 
-    for room in input:
-        matches = regex.findall(room)[0]
-        name = matches[0].replace('-', '')
-        sector_id = int(matches[1])
-        expected_checksum = matches[2]
-        unique = uniq(name)
+    for room_string in input:
+        room = Room(room_string)
+        unique = uniq(room.name)
 
         occurrences = {}
 
         for i in unique:
-            occurrences[i] = name.count(i)
+            occurrences[i] = room.name.count(i)
 
         sorted_occurrences = list(reversed(sorted(occurrences.items(), key=operator.itemgetter(1))))[:5]
         checksum = ""
@@ -34,7 +33,7 @@ if __name__ == '__main__':
         for s in sorted_occurrences:
             checksum += s[0]
 
-        if checksum == expected_checksum:
-            sum += sector_id
+        if checksum == room.expected_checksum:
+            sum += room.sector_id
 
     print(sum)
