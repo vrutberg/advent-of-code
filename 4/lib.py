@@ -13,6 +13,21 @@ class Room:
         self.expected_checksum = matches[2]
 
 
+class Sorter:
+    _alphabet = list(reversed('abcdefghijklmnopqrstuvwxyz'))
+
+    def __init__(self, s: str):
+        self.s = s
+
+    def key(self, c):
+        value = self._alphabet.index(c) + 1
+        factor = self.s.count(c)
+
+        print(self.s, c, value * factor)
+
+        return value * factor
+
+
 class ChecksumCalculator:
     def _unique(self, s: str):
         unique = []
@@ -22,19 +37,7 @@ class ChecksumCalculator:
     def calculcate_checksum(self, room: Room):
         unique = self._unique(room.name)
 
-        occurrences = []
+        sorter = Sorter(room.name)
+        unique = sorted(unique, key=sorter.key)[:5]
 
-        for i in unique:
-            occurrences.append((i, room.name.count(i)))
-
-        print(occurrences)
-        sorted_occurrences = list(sorted(occurrences, key=operator.itemgetter(0)))
-        print(sorted_occurrences)
-        sorted_occurrences = list(sorted(occurrences, key=operator.itemgetter(1), reverse=True))[:5]
-        print(sorted_occurrences)
-        checksum = ""
-
-        for s in sorted_occurrences:
-            checksum += s[0]
-
-        return checksum
+        return unique
