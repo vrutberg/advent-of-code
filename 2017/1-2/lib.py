@@ -7,7 +7,7 @@ class Solver:
         result = 0
 
         for i in enumerate(input):
-            if i[1] == input[int((i[0] + len(input) / 2) % len(input))]:
+            if i[1] == input[(i[0] + len(input) // 2) % len(input)]:
                 result += int(i[1])
 
         return result
