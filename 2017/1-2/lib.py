@@ -1,7 +1,5 @@
 #!/usr/local/bin/python3
 
-from functools import reduce
-
 class Solver:
     def solve(self, input: str):
         result = 0
