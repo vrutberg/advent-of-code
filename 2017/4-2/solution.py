@@ -11,13 +11,10 @@ def is_valid(passphrase: str):
     if len(set(words)) != len(words):
         return 0
 
-    for index, word in enumerate(words):
-        for otherIndex, otherWord in enumerate(words):
-            if index == otherIndex:
-                continue
+    sorted_words = [''.join(sorted(c)) for c in [word for word in words]]
 
-            if word in [''.join(a) for a in list(itertools.permutations(otherWord))]:
-                return 0
+    if len(set(sorted_words)) != len(sorted_words):
+        return 0
 
     return 1
 
