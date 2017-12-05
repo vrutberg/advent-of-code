@@ -1,7 +1,5 @@
 #!/usr/local/bin/python3
 
-import itertools
-
 def solve(input: [str]):
     return sum([is_valid(passphrase) for passphrase in input])
 
