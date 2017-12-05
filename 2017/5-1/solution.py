@@ -1,13 +1,11 @@
 #!/usr/local/bin/python3
 
 def solve(input):
-    lower_bound = 0
-    upper_bound = len(input) - 1
     cursor = 0
     iterations = 0
 
     while True:
-        if cursor < lower_bound or cursor > upper_bound:
+        if cursor < 0 or cursor > len(input) - 1:
             return iterations
 
         old_cursor = cursor
