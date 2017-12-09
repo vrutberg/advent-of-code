@@ -12,6 +12,11 @@ comparators = {
     '>': lambda x, y: x > y
 }
 
+operations = {
+    'inc': lambda x, y: x + y,
+    'dec': lambda x, y: x - y
+}
+
 def solve(input):
     for instruction in input:
         tokens = instruction.split(" ")
@@ -24,10 +29,7 @@ def solve(input):
         token_condition_value = int(tokens[6])
 
         if comparators[token_condition_comparator](register[token_condition_register], token_condition_value):
-            if token_operation == 'inc':
-                register[token_to_modify] += token_new_value
-            else:
-                register[token_to_modify] -= token_new_value
+            register[token_to_modify] = operations[token_operation](register[token_to_modify], token_new_value)
 
     return sorted(register.values())[-1]
 
