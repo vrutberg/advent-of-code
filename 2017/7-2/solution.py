@@ -13,11 +13,52 @@ class Node:
         self.name = name
         self.weight = weight
 
-def weight_for_node(node):
-    if len(node.children) == 0:
-        return node.weight
+    def total_weight(self):
+        if len(self.children) == 0:
+            return self.weight
 
-    return node.weight + sum([weight_for_node(n) for n in node.children])
+        return self.weight + sum([n.total_weight() for n in self.children])
+
+
+def find_root_node():
+    top_nodes = set()
+    child_nodes = set()
+
+    for index, node in enumerate(nodes):
+        top_nodes.add(node)
+
+        for child_node in node.children:
+            child_nodes.add(child_node)
+
+    return list(top_nodes.difference(child_nodes))[0]
+
+def is_balanced(node):
+    if len(node.children) == 0:
+        return True
+
+    weights = sorted([child.total_weight() for child in node.children])
+
+    return weights[0] == weights[-1]
+
+def find_unbalanced_node(node):
+    for child in node.children:
+        if not is_balanced(child):
+            return find_unbalanced_node(child)
+
+    weights = {}
+
+    for child in node.children:
+        t = child.total_weight()
+        try:
+            weights[t].append(child)
+        except:
+            weights[t] = [child]
+
+    for key in weights.keys():
+        value = weights[key]
+        if len(value) == 1:
+            sorted_keys = sorted(weights.keys())
+            return value[0].weight - (sorted_keys[1] - sorted_keys[0])
 
 def solve(input):
     for row in input:
@@ -33,28 +74,7 @@ def solve(input):
         if len(node.children) > 0:
             node.children = list(filter(lambda x: x.name in node.children, nodes))
 
-    top_nodes = set()
-    child_nodes = set()
-
-    for index, node in enumerate(nodes):
-        top_nodes.add(node)
-
-        for child_node in node.children:
-            child_nodes.add(child_node)
-
-    root = list(top_nodes.difference(child_nodes))[0]
-
-    print(root.name, weight_for_node(root))
-
-    for node in root.children:
-        print(node.name, node.weight, weight_for_node(node))
-
-    print("---")
-
-    for node in root.children[2].children[1].children:
-        print(node.name, node.weight, weight_for_node(node))
-
-    return 0
+    return find_unbalanced_node(find_root_node())
 
 if __name__ == '__main__':
     input = open('./input.txt', 'r').read().strip().split("\n")
