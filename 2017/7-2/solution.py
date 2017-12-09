@@ -19,6 +19,14 @@ class Node:
 
         return self.weight + sum([n.total_weight() for n in self.children])
 
+    def is_balanced(self):
+        if len(self.children) == 0:
+            return True
+
+        weights = sorted([child.total_weight() for child in self.children])
+
+        return weights[0] == weights[-1]
+
 
 def find_root_node():
     top_nodes = set()
@@ -32,17 +40,9 @@ def find_root_node():
 
     return list(top_nodes.difference(child_nodes))[0]
 
-def is_balanced(node):
-    if len(node.children) == 0:
-        return True
-
-    weights = sorted([child.total_weight() for child in node.children])
-
-    return weights[0] == weights[-1]
-
 def find_unbalanced_node(node):
     for child in node.children:
-        if not is_balanced(child):
+        if not child.is_balanced():
             return find_unbalanced_node(child)
 
     weights = {}
