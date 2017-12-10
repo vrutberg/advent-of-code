@@ -32,5 +32,5 @@ def solve(input):
 
 
 if __name__ == '__main__':
-    input = input = open('./input.txt', 'r').read().strip()
+    input = open('./input.txt', 'r').read().strip()
     print("solution: {}".format(solve(input)))
