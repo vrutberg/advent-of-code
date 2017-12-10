@@ -1,5 +1,7 @@
 #!/usr/local/bin/python3
 
+from functools import reduce
+
 def calculate_input(data):
     return [ord(str) for str in data] + [17, 31, 73, 47, 23]
 
@@ -25,23 +27,8 @@ def solve(length, input):
             cursor = (cursor + i + skip_size) % len(numbers)
             skip_size += 1
 
-    dense_hash = []
-
-    for i in range(16):
-        myslice = numbers[16*i:16*(i+1)]
-        dense_hash.append(myslice[0] ^ myslice[1] ^ myslice[2] ^ myslice[3] ^ myslice[4] ^ myslice[5] ^ myslice[6] ^ myslice[7] ^ myslice[8] ^ myslice[9] ^ myslice[10] ^ myslice[11] ^ myslice[12] ^ myslice[13] ^ myslice[14] ^ myslice[15])
-
-    hex_string = ""
-
-    for i in dense_hash:
-        i_hex = format(i, 'x')
-
-        if len(i_hex) == 1:
-            hex_string += '0' + i_hex
-        else:
-            hex_string += i_hex
-
-    return hex_string
+    dense_hash = [reduce(lambda x, y: x ^ y, numbers[16*i:16*(i+1)], 0) for i in range(16)]
+    return ''.join([format(i, 'x').zfill(2) for i in dense_hash])
 
 if __name__ == '__main__':
     input = calculate_input(open('./input.txt', 'r').read().strip())
