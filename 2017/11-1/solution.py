@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 
-bump_ne_nw = False
+is_bump = False
 
 def n(x, y):
     return (x, y+1)
@@ -9,25 +9,25 @@ def s(x, y):
     return (x, y-1)
 
 def ne(x, y):
-    if bump_ne_nw:
+    if is_bump:
         return (x+1, y+1)
     else:
         return (x+1, y)
 
 def nw(x, y):
-    if bump_ne_nw:
+    if is_bump:
         return (x-1, y+1)
     else:
         return (x-1, y)
 
 def se(x, y):
-    if not bump_ne_nw:
+    if not is_bump:
         return (x+1, y-1)
     else:
         return (x+1, y)
 
 def sw(x, y):
-    if not bump_ne_nw:
+    if not is_bump:
         return (x-1, y-1)
     else:
         return (x-1, y)
@@ -42,9 +42,9 @@ ops = {
 }
 
 def navigate(input):
-    global bump_ne_nw
+    global is_bump
 
-    bump_ne_nw = False
+    is_bump = False
 
     x, y = (0, 0)
 
@@ -52,27 +52,27 @@ def navigate(input):
         x, y = ops[i](x, y)
 
         if not i in ['s', 'n']:
-            bump_ne_nw = not bump_ne_nw
+            is_bump = not is_bump
 
     return (x, y)
 
-def calculate_direction(source, target, bump_ne_nw):
-    print("source: {}, target: {}, bump_ne_nw: {}".format(source, target, bump_ne_nw))
+def calculate_direction(source, target, is_bump):
+    print("source: {}, target: {}, is_bump: {}".format(source, target, is_bump))
     x, y = source
     targetX, targetY = target
 
     direction = None
 
-    if targetX > x and (targetY > y or (targetY == y and not bump_ne_nw)):
+    if targetX > x and (targetY > y or (targetY == y and not is_bump)):
         direction = 'ne'
 
-    elif targetX > x and (targetY < y or (targetY == y and bump_ne_nw)):
+    elif targetX > x and (targetY < y or (targetY == y and is_bump)):
         direction = 'se'
 
-    elif targetX < x and (targetY > y or (targetY == y and not bump_ne_nw)):
+    elif targetX < x and (targetY > y or (targetY == y and not is_bump)):
         direction = 'nw'
 
-    elif targetX < x and (targetY < y or (targetY == y and bump_ne_nw)):
+    elif targetX < x and (targetY < y or (targetY == y and is_bump)):
         direction = 'sw'
 
     elif targetX == x and targetY > y:
@@ -84,14 +84,14 @@ def calculate_direction(source, target, bump_ne_nw):
     return direction
 
 def steps(source, target):
-    global bump_ne_nw
+    global is_bump
 
     x, y = source
     targetX, targetY = target
 
-    bump_ne_nw = False
+    is_bump = False
 
-    direction = calculate_direction((x, y), (targetX, targetY), bump_ne_nw)
+    direction = calculate_direction((x, y), (targetX, targetY), is_bump)
 
     print('direction: {}'.format(direction))
     print('targetX: {}, targetY: {}'.format(targetX, targetY))
@@ -106,9 +106,9 @@ def steps(source, target):
         steps += 1
 
         if not direction in ['s', 'n']:
-            bump_ne_nw = not bump_ne_nw
+            is_bump = not is_bump
 
-        direction = calculate_direction((x, y), (targetX, targetY), bump_ne_nw)
+        direction = calculate_direction((x, y), (targetX, targetY), is_bump)
 
     print("x: {}, y: {}".format(targetX, targetY))
 

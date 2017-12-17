@@ -20,19 +20,19 @@ class Tests(unittest.TestCase):
         self.assertEqual(navigate(["se","se"]), (2, -1))
 
     def test_calculate_direction_ne(self):
-        self.assertEqual(calculate_direction((0, 0), (1, 0), False, True), 'ne')
+        self.assertEqual(calculate_direction((0, 0), (1, 0), False), 'ne')
 
     def test_calculate_direction_se(self):
-        self.assertEqual(calculate_direction((0, 0), (1, 0), True, False), 'se')
+        self.assertEqual(calculate_direction((0, 0), (1, 0), True), 'se')
 
     def test_calculate_direction_se_custom(self):
-        self.assertEqual(calculate_direction((4, 2), (6, 1), False, True), 'se')
+        self.assertEqual(calculate_direction((4, 2), (6, 1), False), 'se')
 
     def test_calculate_direction_nw(self):
-        self.assertEqual(calculate_direction((0, 0), (-1, 0), False, True), 'nw')
+        self.assertEqual(calculate_direction((0, 0), (-1, 0), False), 'nw')
 
     def test_calculate_direction_sw(self):
-        self.assertEqual(calculate_direction((0, 0), (-1, 0), True, False), 'sw')
+        self.assertEqual(calculate_direction((0, 0), (-1, 0), True), 'sw')
 
     def test_solve_example_one(self):
         self.assertEqual(solve(["ne","ne","ne"]), 3)
