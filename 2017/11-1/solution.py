@@ -61,27 +61,23 @@ def calculate_direction(source, target, is_bump):
     x, y = source
     targetX, targetY = target
 
-    direction = None
-
     if targetX > x and (targetY > y or (targetY == y and not is_bump)):
-        direction = 'ne'
+        return 'ne'
 
     elif targetX > x and (targetY < y or (targetY == y and is_bump)):
-        direction = 'se'
+        return 'se'
 
     elif targetX < x and (targetY > y or (targetY == y and not is_bump)):
-        direction = 'nw'
+        return 'nw'
 
     elif targetX < x and (targetY < y or (targetY == y and is_bump)):
-        direction = 'sw'
+        return 'sw'
 
     elif targetX == x and targetY > y:
-        direction = 'n'
+        return 'n'
 
     elif targetX == x and targetY < y:
-        direction = 's'
-
-    return direction
+        return 's'
 
 def steps(source, target):
     global is_bump
