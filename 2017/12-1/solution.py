@@ -11,13 +11,9 @@ def solve(input, needle):
         nodes[value] = children
 
     programs.add(needle)
-    seen = set()
 
     def p(needle):
         programs.add(needle)
-
-        if len(seen) == len(nodes):
-            return
 
         for x in nodes[needle]:
             if x not in programs:
