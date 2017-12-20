@@ -24,31 +24,21 @@ class Scanner:
             else:
                 self.position -= 1
 
-
 def solve(input):
     scanners = defaultdict(lambda: None)
 
     for value in input:
-        scanners.update({ int(value[0]): int(value[1])})
-
-    max_value = max(list(scanners.keys()))
-    positions = list(range(max_value+1))
-
-    for index, value in enumerate(positions):
-        if scanners[index] is None:
-            positions[index] = None
-        else:
-            positions[index] = Scanner(scanners[index])
+        scanners.update({ int(value[0]): Scanner(int(value[1]))})
 
     severity = 0
 
-    for pos in range(max_value+1):
-        if positions[pos] is not None and positions[pos].position == 0:
-            severity += pos * positions[pos]._size
+    for pos in range(max(list(scanners.keys()))+1):
+        if scanners[pos] is not None and scanners[pos].position == 0:
+            severity += pos * scanners[pos]._size
 
-        for p in positions:
-            if p is not None:
-                p.move()
+        for p in scanners:
+            if scanners[p] is not None:
+                scanners[p].move()
 
         pos += 1
 
