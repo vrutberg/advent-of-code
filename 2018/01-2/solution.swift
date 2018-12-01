@@ -1,10 +1,8 @@
-import UIKit
-import PlaygroundSupport
+import Foundation
 
 let start = Date()
 
-guard let fileUrl = Bundle.main.url(forResource: "input", withExtension: "txt"),
-    let input = try? String.init(contentsOf: fileUrl, encoding: .utf8)else {
+guard let input = try? String(contentsOfFile: "./input.txt", encoding: .utf8) else {
     fatalError()
 }
 
