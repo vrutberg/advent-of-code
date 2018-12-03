@@ -32,17 +32,25 @@ struct Coordinate: Hashable {
 }
 
 var claimIdsPerCoordinate = [Coordinate: [Int]]()
+var overlaps = [Int: Set<Int>]()
 
 try! String(contentsOfFile: "./input.txt", encoding: .utf8)
     .split(separator: "\n")
     .map(String.init)
     .map(Claim.init)
     .forEach { claim in
+        overlaps[claim.id] = []
+
         (claim.x ..< claim.x + claim.width).forEach { x in
             (claim.y ..< claim.y + claim.height).forEach { y in
                 let coordinate = Coordinate(x: x, y: y)
 
                 if var ids = claimIdsPerCoordinate[coordinate] {
+                    ids.forEach {
+                        overlaps[claim.id]?.insert($0)
+                        overlaps[$0]?.insert(claim.id)
+                    }
+
                     ids.append(claim.id)
                     claimIdsPerCoordinate[coordinate] = ids
                 } else {
@@ -52,7 +60,7 @@ try! String(contentsOfFile: "./input.txt", encoding: .utf8)
         }
     }
 
-let result = claimIdsPerCoordinate.filter { _, value in value.count > 1 }.count
+let result = overlaps.filter { key, value in return value.count == 0 }
 
 print(result)
 
