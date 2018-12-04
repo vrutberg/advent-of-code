@@ -11,13 +11,11 @@ let guardIdRegex = try! NSRegularExpression(pattern: "#(\\d+)")
 
 struct LogEntry {
     enum Event {
-        case beginsShift(Int)
-        case fallsAsleep
-        case wakesUp
+        case beginsShift(Int), fallsAsleep, wakesUp
     }
 
-    let date: Date
     let event: Event
+    let date: Date
 
     init(from string: String) {
         let openingBrace = string.index(after: string.firstIndex(of: "[")!)
@@ -25,9 +23,11 @@ struct LogEntry {
         let dateString = String(string[openingBrace ..< closingBrace])
         let eventString = String(string[string.index(after: closingBrace)...]).trimmingCharacters(in: .whitespacesAndNewlines)
 
+        self.date = dateFormatter.date(from: dateString)!
+
         if eventString.contains("begins shift") {
             let match = guardIdRegex.firstMatch(in: eventString, range: NSRange(eventString.startIndex..., in: eventString))!
-            let guardId = Int(string[Range(match.range(at: 1), in: string)!])!
+            let guardId = Int(eventString[Range(match.range(at: 1), in: eventString)!])!
 
             self.event = .beginsShift(guardId)
         } else if eventString.contains("wakes up") {
@@ -37,12 +37,13 @@ struct LogEntry {
         } else {
             fatalError()
         }
-
-        self.date = dateFormatter.date(from: dateString)!
     }
 }
 
-var minutesByGuard = [Int: Int]()
+var storedGuardId: Int!
+let calendar = Calendar.current
+var fellAsleepDate: Date?
+var minutesOfSleepPerGuard = [Int: [Int]]()
 
 try! String(contentsOfFile: "./input.txt", encoding: .utf8)
     .split(separator: "\n")
@@ -52,8 +53,34 @@ try! String(contentsOfFile: "./input.txt", encoding: .utf8)
         $0.date < $1.date
     }
     .forEach {
-        print($0)
+        switch ($0.event) {
+        case .beginsShift(let guardId):
+            storedGuardId = guardId
+        case .fallsAsleep:
+            fellAsleepDate = $0.date
+        case .wakesUp:
+            let from = calendar.component(.minute, from: fellAsleepDate!)
+            let to = calendar.component(.minute, from: $0.date)
+
+            if minutesOfSleepPerGuard[storedGuardId] == nil {
+                minutesOfSleepPerGuard[storedGuardId] = []
+            }
+
+            minutesOfSleepPerGuard[storedGuardId]! += Array(from ..< to)
+        }
     }
+
+let mostAsleepGuard = minutesOfSleepPerGuard
+    .sorted { $0.1.count > $1.1.count }
+    .first!
+
+let id = mostAsleepGuard.0
+let minute = mostAsleepGuard.1
+    .reduce(into: [:]) { $0[$1, default: 0] += 1 }
+    .max { $0.1 < $1.1 }!
+    .key
+
+print(id * minute)
 
 let end = Date()
 print("took: \(end.timeIntervalSince1970 - start.timeIntervalSince1970) seconds")
