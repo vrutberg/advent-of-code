@@ -28,7 +28,7 @@ while(true) {
     }
 }
 
-print(polymer.count / 2)
+print(polymer.count)
 
 let end = Date()
 print("took: \(end.timeIntervalSince1970 - start.timeIntervalSince1970) seconds")
