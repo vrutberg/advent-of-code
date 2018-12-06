@@ -25,8 +25,8 @@ func findClosestPath(point: Point, in points: [Point]) -> Int? {
     var storedIndex = Int.max
 
     points.enumerated().forEach { index, p in
-        let dx = (p.x > point.x) ? p.x - point.x : point.x - p.x
-        let dy = (p.y > point.y) ? p.y - point.y : point.y - p.y
+        let dx = abs(p.x - point.x)
+        let dy = abs(p.y - point.y)
 
         if dx + dy <= (lengths.min()!) {
             lengths.append(dx + dy)
