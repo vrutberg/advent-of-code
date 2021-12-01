@@ -8,16 +8,15 @@ let numbers = input
     .components(separatedBy: .newlines)
     .compactMap { Int($0) }
 
-var increased = 0
+let answer: Int = numbers
+    .enumerated()
+    .map { index, number in
+        guard index >= 1 else {
+            return 0
+        }
 
-numbers.enumerated().forEach { index, number in
-    guard index >= 1 else {
-        return
+        return number > numbers[index-1] ? 1 : 0
     }
+    .reduce(0, +)
 
-    if number > numbers[index-1] {
-        increased += 1
-    }
-}
-
-print(increased)
+print(answer)

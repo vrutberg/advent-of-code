@@ -4,25 +4,27 @@ guard let input = try? String(contentsOfFile: "./input.txt", encoding: .utf8) el
     fatalError()
 }
 
+func sum(numbers: [Int], index: Int) -> Int{
+    guard index >= 3 else {
+        return 0
+    }
+
+    return numbers[index-2...index].reduce(0, +)
+}
+
 let numbers = input
     .components(separatedBy: .newlines)
     .compactMap { Int($0) }
 
-var increased = 0
-var previousGroup: Int?
-
-numbers.enumerated().forEach { index, number in
-    guard index >= 2 else {
-        return
+let answer: Int = numbers
+    .enumerated()
+    .map { index, _ in
+        (
+            sum(numbers: numbers, index: index-1),
+            sum(numbers: numbers, index: index)
+        )
     }
+    .map { $0.0 < $0.1 ? 1 : 0 }
+    .reduce(0, +)
 
-    let currentGroup = numbers[index-2...index].reduce(0, +)
-
-    if let previousGroup = previousGroup, currentGroup > previousGroup {
-        increased += 1
-    }
-
-    previousGroup = currentGroup
-}
-
-print(increased)
+print(answer)
