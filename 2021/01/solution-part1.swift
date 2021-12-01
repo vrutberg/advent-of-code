@@ -5,7 +5,7 @@ guard let input = try? String(contentsOfFile: "./input.txt", encoding: .utf8) el
 }
 
 let numbers = input
-    .split(separator: "\n")
+    .components(separatedBy: .newlines)
     .compactMap { Int($0) }
 
 var increased = 0
