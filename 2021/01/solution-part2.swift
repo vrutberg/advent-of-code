@@ -17,8 +17,8 @@ let numbers = input
     .compactMap { Int($0) }
 
 let answer: Int = numbers
-    .enumerated()
-    .map { index, _ in
+    .indices
+    .map { index in
         (
             sum(numbers: numbers, index: index-1),
             sum(numbers: numbers, index: index)
