@@ -9,16 +9,15 @@ let numbers = input
     .compactMap { Int($0) }
 
 var increased = 0
-var previousNumber: Int?
 
-numbers.forEach {
-    if let previousNumber = previousNumber {
-        if $0 > previousNumber {
-            increased += 1
-        }
+numbers.enumerated().forEach { index, number in
+    guard index >= 1 else {
+        return
     }
 
-    previousNumber = $0
+    if number > numbers[index-1] {
+        increased += 1
+    }
 }
 
 print(increased)
