@@ -4,24 +4,21 @@ guard let input = try? String(contentsOfFile: "./input.txt", encoding: .utf8) el
     fatalError()
 }
 
-let numbers = input.split(separator: ",").map { Int($0)! }.sorted()
-var dict: [Int: Int] = [:]
-var cache: [Int: Int] = [:]
+let numbers = input.split(separator: ",").map { Int($0)! }
 
-((numbers.first!)...(numbers.last!)).forEach { horizontalPosition in
-    dict[horizontalPosition] = numbers.map {
-        let steps = abs(horizontalPosition - $0)
-        if steps == 0 { return 0 }
-        if steps == 1 { return 1 }
+let sums: [Int] = numbers.indices.map { horizontalPosition -> Int in
+    numbers.map { number -> Int in
+        let steps: Int = abs(horizontalPosition - number)
+        guard steps > 0 else { return 0 }
 
-        if let cached = cache[steps] {
-            return cached
+        var sum = 0
+        var i = 1
+        while i <= steps {
+            sum += i
+            i += 1
         }
-
-        let realSteps = (1...steps).reduce(0, +)
-        cache[steps] = realSteps
-        return realSteps
+        return sum
     }.reduce(0, +)
 }
 
-print(dict.sorted(by: { $0.value < $1.value }).first!.value)
+print(sums.sorted().first!)
