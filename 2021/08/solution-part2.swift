@@ -127,13 +127,10 @@ struct Entry {
     }
 }
 
-// let entry = Entry(signalPatterns: "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab".split(separator: " ").map(String.init), output: "cdfeb fcadb cdfeb cdbaf".split(separator: " ").map(String.init))
-// print(entry.solve())
-
 let entries: [Entry] = input
     .components(separatedBy: .newlines)
     .map { $0.split(separator: "|").map { $0.split(separator: " ").map(String.init) } }
     .map { Entry(signalPatterns: $0.first!, output: $0.last!) }
 
-let answer = entries.map { $0.solve() }.map(String.init).map { Int($0)! }.reduce(0, +)
+let answer = entries.map { $0.solve() }.reduce(0, +)
 print(answer)
