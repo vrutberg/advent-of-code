@@ -4,12 +4,6 @@ guard let input = try? String(contentsOfFile: "./input.txt", encoding: .utf8) el
     fatalError()
 }
 
-// struct Point {
-//     let x: Int
-//     let y: Int
-//     let value: Int
-// }
-
 let map = input
     .components(separatedBy: .newlines)
     .map { 
