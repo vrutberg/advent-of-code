@@ -29,8 +29,11 @@ struct Pair: Hashable, Equatable {
     let a: Character
     let b: Character
 
-    func inserting(_ character: Character) -> String {
-        String([a, character, b])
+    func replacements(_ character: Character) -> [Pair] {
+        [
+            Pair(a: a, b: character),
+            Pair(a: character, b: b)
+        ]
     }
 }
 
@@ -42,38 +45,44 @@ let rules: [(Pair, Character)] = lines[2...].map {
     let split = $0.components(separatedBy: " -> ")
     return (Pair(a: split.first!.first!, b: split.first!.last!), split.last!.first!)
 }
+
+var pairs: [Pair: Int] = [:]
+template.indices.forEach {
+    guard $0 != template.indices.last else {
+        return
+    }
+
+    let pair = Pair(a: template[$0], b: template[template.index(after: $0)])
+    pairs[pair, default: 0] += 1
+}
+
 let rulesDictionary: [Pair: Character] = Dictionary(uniqueKeysWithValues: rules)
 
-func apply(rules: [Pair: Character], to template: String) -> String {
-    var newString = ""
+func apply(rules: [Pair: Character], to template: [Pair: Int]) -> [Pair: Int] {
+    var copy = template
 
-    template.indices.forEach {
-        guard $0 != template.indices.last else {
-            return
-        }
+    template.keys.forEach { pair in
+        if let character = rules[pair] {
+            copy[pair]! -= template[pair]!
 
-        let currentPair = Pair(a: template[$0], b: template[template.index(after: $0)])
-        if let replacement = rules[currentPair] {
-            newString.append(String([currentPair.a, replacement]))
-
-            if $0 == template.index(before: template.indices.last!) {
-                newString.append(currentPair.b)
+            pair.replacements(character).forEach {
+                copy[$0, default: 0] += template[pair]!
             }
-        } else {
-            // ¯\_(ツ)_/¯ 
         }
     }
 
-    return newString
+    return copy.filter { $0.value > 0 }
 }
 
-var a = template
 (0..<40).forEach { step in
-    print("step", step, Date())
-    a = apply(rules: rulesDictionary, to: a)
+    pairs = apply(rules: rulesDictionary, to: pairs)
 }
-let counts = a.reduce(into: [:]) { $0[$1, default: 0] += 1 }.sorted { $0.value > $1.value }
+let counts = pairs.reduce(into: [Character: Int]()) {
+    $0[$1.key.a, default: 0] += $1.value
+    $0[$1.key.b, default: 0] += $1.value
+}.sorted { $0.value > $1.value }
+print(counts)
 let mostCommon = counts.first!.value
 let leastCommon = counts.last!.value
 let answer = mostCommon - leastCommon
-print(answer)
+print(answer / 2 + 1)
