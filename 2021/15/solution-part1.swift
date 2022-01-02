@@ -23,14 +23,10 @@ struct Coordinate: Hashable, Equatable {
 
     var surroundingCoordinates: [Coordinate] {
         [
-            // Coordinate(x: x-1, y: y-1),
             Coordinate(x: x-1, y: y),
-            // Coordinate(x: x-1, y: y+1),
             Coordinate(x: x, y: y-1),
             Coordinate(x: x, y: y+1),
-            // Coordinate(x: x+1, y: y-1),
             Coordinate(x: x+1, y: y),
-            // Coordinate(x: x+1, y: y+1),
         ]
     }
 }
@@ -66,36 +62,44 @@ func solve(
     let target = Coordinate(x: map.count-1, y: map.count-1)
 
     var distances: [Coordinate: Int] = [:]
-    var unvisited = Set<Coordinate>()
+    var unvisited: [Int: Set<Coordinate>] = [:]
 
     map.enumerated().forEach { y, row in
         row.enumerated().forEach { x, value in
             let c = Coordinate(x: x, y: y)
             distances[c] = Int.max
-            unvisited.insert(c)
+            unvisited[Int.max, default: []].insert(c)
         }
     }
 
     distances[source] = 0
+    unvisited[0, default: []] = [source]
+    unvisited[Int.max, default: []].remove(source)
     
     while !unvisited.isEmpty {
-        guard let current: Coordinate = unvisited.sorted(by: { (distances[$0] ?? Int.max) < (distances[$1] ?? Int.max) }).first else {
+        guard let key = unvisited.keys.sorted().first, let current: Coordinate = unvisited[key, default: []].first else {
             fatalError("no more next node to visit")
         }
 
-        unvisited.remove(current)
+        unvisited[key, default: []].remove(current)
+        if unvisited[key]?.isEmpty == true {
+            unvisited.removeValue(forKey: key)
+        }
 
         if current == target {
             break
         }
 
-        current.surroundingCoordinates.filter(unvisited.contains).forEach {
+        current.surroundingCoordinates.filter(unvisited.values.flatMap { $0 }.contains).forEach {
             guard let value = map.number(at: $0) else {
                 fatalError("error horror")
             }
+            let oldDistance = distances[$0] ?? Int.max
             let newDistance = (distances[current] ?? Int.max) + value
 
-            if newDistance < (distances[$0] ?? Int.max) {
+            if newDistance < oldDistance {
+                unvisited[newDistance, default: []].insert($0)
+                unvisited[oldDistance, default: []].remove($0)
                 distances[$0] = newDistance
             }
         }
@@ -104,5 +108,7 @@ func solve(
     return distances[target] ?? Int.max
 }
 
+let start = Date()
 let answer = solve(map: lines)
 print(answer)
+print("took:", Date().timeIntervalSince(start), "seconds")
