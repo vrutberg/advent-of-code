@@ -310,8 +310,8 @@ func solve(
     let target = Coordinate(x: map.count-1, y: map.count-1)
 
     var distances: [Coordinate: Int] = [:]
-    var unvisitedList: [HeapElement] = []
-    var unvisited: Heap<HeapElement> = Heap(sort: { $0.distance < $1.distance })
+    var unvisitedCoordinates: Set<Coordinate> = []
+    var searchQueue: Heap<HeapElement> = Heap(sort: { $0.distance < $1.distance })
 
     map.enumerated().forEach { y, row in
         row.enumerated().forEach { x, value in
@@ -319,18 +319,19 @@ func solve(
             distances[c] = Int.max
 
             if !(x == 0 && y == 0) {
-                unvisitedList.append(HeapElement(coordinate: c, distance: Int.max))
+                unvisitedCoordinates.insert(c)
             }
         }
     }
 
-    unvisited.insert(unvisitedList)
+    searchQueue.insert(unvisitedCoordinates.map { HeapElement(coordinate: $0, distance: Int.max) })
 
     distances[source] = 0
-    unvisited.insert(HeapElement(coordinate: source, distance: 0))
+    searchQueue.insert(HeapElement(coordinate: source, distance: 0))
+    unvisitedCoordinates.remove(source)
 
-    while !unvisited.isEmpty {
-        guard let current = unvisited.remove() else {
+    while !unvisitedCoordinates.isEmpty {
+        guard let current = searchQueue.remove() else {
             fatalError("no more next node to visit")
         }
 
@@ -338,7 +339,7 @@ func solve(
             break
         }
 
-        current.coordinate.surroundingCoordinates.filter { c in unvisited.contains { h in c == h.coordinate } }.forEach { c in
+        current.coordinate.surroundingCoordinates.filter(unvisitedCoordinates.contains).forEach { c in
             guard let value = map.number(at: c) else {
                 fatalError("error horror")
             }
@@ -346,9 +347,10 @@ func solve(
             let newDistance = (distances[current.coordinate] ?? Int.max) + value
 
             if newDistance < oldDistance {
-                let index = unvisited.firstIndex(where: { $0.coordinate == c })!
-                unvisited.replace(index: index, value: HeapElement(coordinate: c, distance: newDistance))
+                let index = searchQueue.firstIndex(where: { $0.coordinate == c })!
+                searchQueue.replace(index: index, value: HeapElement(coordinate: c, distance: newDistance))
                 distances[c] = newDistance
+                unvisitedCoordinates.remove(c)
             }
         }
     }
