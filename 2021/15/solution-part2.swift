@@ -324,8 +324,6 @@ func solve(
         }
     }
 
-    searchQueue.insert(unvisitedCoordinates.map { HeapElement(coordinate: $0, distance: Int.max) })
-
     distances[source] = 0
     searchQueue.insert(HeapElement(coordinate: source, distance: 0))
     unvisitedCoordinates.remove(source)
@@ -347,8 +345,7 @@ func solve(
             let newDistance = (distances[current.coordinate] ?? Int.max) + value
 
             if newDistance < oldDistance {
-                let index = searchQueue.firstIndex(where: { $0.coordinate == c })!
-                searchQueue.replace(index: index, value: HeapElement(coordinate: c, distance: newDistance))
+                searchQueue.insert(HeapElement(coordinate: c, distance: newDistance))
                 distances[c] = newDistance
                 unvisitedCoordinates.remove(c)
             }
