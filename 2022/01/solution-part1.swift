@@ -4,19 +4,18 @@ guard let input = try? String(contentsOfFile: "./input.txt", encoding: .utf8) el
     fatalError()
 }
 
-var elvesAndCalories = [Int: Int]()
-
-var cursor = 0
-input
+let maxCalories = input
     .components(separatedBy: .newlines)
-    .forEach { line in
+    .reduce(into: [Int]()) { result, line in
         if let calories = Int(line) {
-            elvesAndCalories[cursor, default: 0] += calories
+            var last = result.popLast() ?? 0
+            last += calories
+            result.append(last)
         } else {
-            cursor += 1
+            result.append(0)
         }
     }
-
-var maxCalories: Int = elvesAndCalories.values.sorted(by: >).first!
+    .sorted(by: >)
+    .first!
 
 print(maxCalories)
