@@ -4,25 +4,47 @@ guard let input = try? String(contentsOfFile: "./input.txt", encoding: .utf8) el
     fatalError()
 }
 
-let lines = input
+
+// [H]                 [Z]         [J]
+// [L]     [W] [B]     [G]         [R]
+// [R]     [G] [S]     [J] [H]     [Q]
+// [F]     [N] [T] [J] [P] [R]     [F]
+// [B]     [C] [M] [R] [Q] [F] [G] [P]
+// [C] [D] [F] [D] [D] [D] [T] [M] [G]
+// [J] [C] [J] [J] [C] [L] [Z] [V] [B]
+// [M] [Z] [H] [P] [N] [W] [P] [L] [C]
+//  1   2   3   4   5   6   7   8   9 
+ 
+
+var stacks = [
+    Array("MJCBFRLH"),
+    Array("ZCD"),
+    Array("HJFCNGW"),
+    Array("PJDMTSB"),
+    Array("NCDRJ"),
+    Array("WLDQPJGZ"),
+    Array("PZTFRH"),
+    Array("LVMG"),
+    Array("CBGPFQRJ"),
+]
+
+extension Array {
+    mutating func popLast(_ count: Int) -> Array<Element> {
+        let toReturn = suffix(count)
+        removeLast(count)
+        return Array(toReturn)
+    }
+}
+
+input
     .components(separatedBy: .newlines)
-    .map {
-        let split = $0.split(separator: ",")
-        return split.map {
-            $0
-                .split(separator: "-")
-                .map(String.init)
-                .compactMap(Int.init)
-        }
+    .map { (line: String) -> [Int] in
+        line.split(separator: " ").compactMap { Int($0) }
     }
-    .filter { (pair: [[Int]]) -> Bool in
-        let first = pair[0]
-        let second = pair[1]
-
-        let firstSet = Set(stride(from: first[0], through: first[1], by: 1))
-        let secondSet = Set(stride(from: second[0], through: second[1], by: 1))
-
-        return !firstSet.intersection(secondSet).isEmpty
+    .forEach { (instruction: [Int]) in
+        let elements = stacks[instruction[1]-1].popLast(instruction[0])
+        stacks[instruction[2]-1].append(contentsOf: elements)
     }
 
-print(lines.count)
+let last = stacks.compactMap { $0.last }.map(String.init).joined()
+print(last)
